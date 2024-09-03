@@ -1,0 +1,41 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Consolidado",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "pages-home"
+    },
+    {
+      "url": "/sdr",
+      "icon": "menu-icon tf-icons bx bx-spreadsheet",
+      "name": "Sdr",
+      "slug": "pages-sdr-livewire"
+    },
+  
+    {
+      "url": "/inventario",
+      "icon": "menu-icon tf-icons bx bx-file",
+      "name": "Inventario",
+      "slug": "pages-producto-livewire"
+    }, {
+      "url": "/reportes",
+      "icon": "menu-icon tf-icons bx bx-line-chart-down",
+      "name": "Reportes",
+      "slug": "pages-reportes"
+    },
+    {
+      "url": "/backups",
+      "icon": "menu-icon tf-icons bx bx-data",
+      "name": "Backups",
+      "slug": "pages-backups"
+    },
+    {
+      "url": "/users",
+      "icon": "menu-icon tf-icons bx bxs-group",
+      "name": "Usuarios",
+      "slug": "pages-users"
+    }
+    
+  ]
+}
