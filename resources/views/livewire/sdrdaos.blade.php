@@ -1,7 +1,7 @@
 <div>
     <h4>SDR</h4>
     <div class="row">
-        <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
+        <div class="col-xl-2 col-lg-2 col-md-4 col-sm-0 col-0 mb-4">
 
         </div>
         <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-6 mb-4">
@@ -125,13 +125,7 @@
                         <span class="text-danger">Falta el campo Cuenta Presupuestaria</span>
                         @enderror
                     </div><br>
-                    <div class="form-group">
-                        <label class="form-label" for="basic-default-company">Folio SDR</label>
-                        <input type="text" wire:model.defer="folio_sdr" class="form-control" id="basic-default-company">
-                        @error('folio_sdr')
-                        <span class="text-danger">Falta el campo Folio SDR</span>
-                        @enderror
-                    </div><br>
+                 
                     <div class="form-group">
                         <label>Materiales - Herramientas - Vehiculos</label>
                         <select wire:model.defer="selectedMaterial" id="materiales" class="form-control">
@@ -300,20 +294,20 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
+                        <th>Folio</th>
                         <th>Solicitado Por</th>
                         <th>Direccion</th>
                         <th>Fecha Direccion</th>
                         <th>S-P-Asociada</th>
                         <th>Cuenta-P</th>
-                        <th>Folio</th>
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
                     @foreach($totalSdr as $sdr)
                     <tr>
-                        <td>{{ $sdr->fecha }}</td>
+                        <td>{{ $sdr->folio_sdr }}</td>
                         <td>{{ $sdr->solicitado_por }}</td>
                         <td>{{ $sdr->unidad }}</td>
                         <td>{{ $sdr->fecha_unidad }}</td>
@@ -321,7 +315,7 @@
                             {{ $solicitud->numero_solicitud }}<br>
                             @endforeach</td>
                         <td>{{ $sdr->cuenta_presupuestaria }}</td>
-                        <td>{{ $sdr->folio_sdr }}</td>
+                        <td>{{ $sdr->fecha }}</td>
                         <td>
                             <button wire:click="edit({{ $sdr->id }})" class="btn btn-info btn-sm">Editar</button>
                             <button wire:click="printPdf({{ $sdr->id }})" class="btn btn-info btn-sm">Descargar</button>

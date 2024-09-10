@@ -197,7 +197,6 @@ class Sdrdaos extends Component
         $this->fecha_unidad = '';
         $this->solicitudes = [];
         $this->cuenta_presupuestaria = '';
-        $this->folio_sdr = '';
         $this->justificacion_del_requerimiento = '';
         $this->certificado_de_presupuesto = '';
         $this->cotizacion = '';
@@ -217,7 +216,6 @@ class Sdrdaos extends Component
             'unidad' => 'required|string|max:255',
             'solicitudes.*' => 'required',
             'cuenta_presupuestaria' => 'required|string|max:255',
-            'folio_sdr' => 'required|string|max:255',
             'selectedMaterial' => 'required',
             'products.*.item' => 'required|string|max:255',
             'products.*.descripcion' => 'required|string|max:255',
@@ -231,16 +229,30 @@ class Sdrdaos extends Component
         ]);
         DB::transaction(
             function () {
+
+                $year = date('Y'); // Obtener el año actual
+                $lastFolio = SdrDao::whereYear('fecha', $year)->orderBy('folio_sdr', 'desc')->first();
+
+                // Si hay un folio del año actual, incrementa el número, si no, inicia en 1
+                if ($lastFolio) {
+                    // Extraer la parte numérica antes del año
+                    $lastNumber = (int) substr($lastFolio->folio_sdr, 0, -strlen($year));
+                    $newFolio = ($lastNumber + 1) . $year;
+                } else {
+                    $newFolio = '1' . $year; // Inicia en 1 para el nuevo año
+                }
+
                 $sdr_dao = SdrDao::create([
                     'fecha' => $this->fecha,
                     'solicitado_por' => $this->solicitado_por,
                     'unidad' => $this->unidad,
                     'fecha_unidad' => $this->fecha_unidad,
                     'cuenta_presupuestaria' => $this->cuenta_presupuestaria,
-                    'folio_sdr' => $this->folio_sdr,
+                    'folio_sdr' => $newFolio,
                     'id_materiales' => $this->selectedMaterial,
                     'justificacion_del_requerimiento' => $this->justificacion_del_requerimiento,
                 ]);
+
 
 
                 foreach ($this->solicitudes as $solicitud) {
@@ -252,7 +264,7 @@ class Sdrdaos extends Component
                     $sdr_dao->sdrproductos()->create($product);
                 }
 
-                
+
                 foreach ($this->cotizaciones as $cotizacion) {
                     if ($cotizacion['archivo'] instanceof \Illuminate\Http\UploadedFile) {
                         $path = $cotizacion['archivo']->store('cotizaciones', 'public');
@@ -290,7 +302,8 @@ class Sdrdaos extends Component
         );
     }
 
-    public function printPdf($id){
+    public function printPdf($id)
+    {
         $sdr_dao = SdrDao::findOrFail($id);
         return redirect()->route('generate.pdf', ['id' => $sdr_dao]);
     }

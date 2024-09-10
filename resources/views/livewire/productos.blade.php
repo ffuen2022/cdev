@@ -29,6 +29,8 @@
          {{ session('message') }}
      </div>
      @endif
+
+     @role('admin')
     <button type="button" wire:click="toggleEstado" class="btn btn-primary">@if ($nuevoProducto)
         Cerrar Producto
         @else
@@ -113,7 +115,7 @@
 
         </div>
     </div>
-
+  
 
     <!-- Modal editar -->
 
@@ -167,6 +169,9 @@
             </div>
         </div>
     </div>
+    @else
+    <h3>Sin Informacion Disponible Por El Momento</h3>
+  @endrole
 
     <!-- Scripts for modal handling -->
     <script>
