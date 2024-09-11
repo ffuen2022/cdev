@@ -210,6 +210,29 @@ class Sdrdaos extends Component
 
     public function save()
     {
+      $year = date('Y'); // Obtener el año actual
+                $lastFolio = SdrDao::whereYear('fecha', $year)->orderBy('folio_sdr', 'desc')->first();
+
+                // Si hay un folio del año actual, incrementa el número, si no, inicia en 1
+                if ($lastFolio) {
+                    // Extraer la parte numérica antes del año
+                    $lastNumber = (int) substr($lastFolio->folio_sdr, 0, -strlen($year));
+                    $newFolio = ($lastNumber + 1) . $year;
+                } else {
+                    $newFolio = '1' . $year; // Inicia en 1 para el nuevo año
+                }
+
+                $sdr_dao = SdrDao::create([
+                    'fecha' => $this->fecha,
+                    'solicitado_por' => $this->solicitado_por,
+                    'unidad' => $this->unidad,
+                    'fecha_unidad' => $this->fecha_unidad,
+                    'cuenta_presupuestaria' => $this->cuenta_presupuestaria,
+                    'folio_sdr' => $newFolio,
+                    'id_materiales' => $this->selectedMaterial,
+                    'justificacion_del_requerimiento' => $this->justificacion_del_requerimiento,
+                ]);
+      
         $this->validate([
             'fecha' => 'required|date',
             'solicitado_por' => 'required|string|max:255',
